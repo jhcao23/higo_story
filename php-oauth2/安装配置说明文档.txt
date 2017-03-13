@@ -1,0 +1,101 @@
+
+-------------------------------- 代码修改过程-------------
+
+首先
+
+admin  includes  languages这3个文件放到您网站的跟目录覆盖
+
+覆盖前须知admin目录为后台目录如果改动请修改此目录名称在覆盖。后面的 admin 都代表 后台目录 
+
+images文件放到您模板文件夹下覆盖
+
+
+----------------------------------修改 1
+修改根目录下的 user.php
+搜索找到$not_login_arr代码段，大概在30行，如下代码：
+$not_login_arr =
+array('login','act_login','register','act_register','act_edit_password','get_password','send_pwd_email','password', 'signin', 'add_tag', 'collect', 'return_to_cart', 'logout', 'email_list', 'validate_email', 'send_hash_mail', 'order_query', 'is_registered', 'check_email','clear_history','qpassword_name', 'get_passwd_question', 'check_answer');
+
+在'check_answer'后面 添加代码： , 'oath' , 'oath_login', 'other_login'
+
+结果 如 
+
+$not_login_arr =
+array('login','act_login','register','act_register','act_edit_password','get_password','send_pwd_email','password', 'signin', 'add_tag', 'collect', 'return_to_cart', 'logout', 'email_list', 'validate_email', 'send_hash_mail', 'order_query', 'is_registered', 'check_email','clear_history','qpassword_name', 'get_passwd_question', 'check_answer' , 'oath' , 'oath_login', 'other_login');
+
+
+--------------------------------修改 2   添加调用接口
+修改根目录下的user.php：
+查找位置  /* 验证用户注册邮件 */
+将调用代码.txt文件中的内容复制到此句上面（如果你的版本是2.7.3版本，请复制 调用代码-2.7.3.txt文件内容）
+
+
+
+--------------------------------修改 3  插入菜单项
+//  admin 为 你的后台目录
+
+文件路径 = admin/includes/inc_menu.php
+插入代码 = $modules['11_system']['website']  = 'website.php?act=list';
+位置     = 随意 
+
+
+--------------------------------修改 4   检查权限的
+
+文件路径 = admin/includes/inc_priv.php 
+插入代码 = $purview['website']              = 'website';
+位置     = 随意
+
+-------------------------------修改 5 插入 语言包  这样 菜单 管理就出来了！！！
+
+文件路径 =  languages/zh_cn/admin/common.php
+插入代码 =  $_LANG['website'] = '第三方登录插件管理';  //名字你可以自己定
+位置     =  随意'
+
+
+-------------------------------修改 6、7 模板文件修改及登录图标安装放置，由于内容较多，单独成一个文件，请查看 默认模板安装说明.txt 文件！！
+
+
+
+----------------------------安装过程---------------------
+
+打开你的商城后台 ， 在【系统设置】里面 看到
+【第三方登录插件管理】
+如果没有看到菜单，请直接浏览器访问：你的域名/admin/website.php?act=list
+
+------------------------- 操作流程 开始-------------
+
+第一次使用此插件需要 进行一次 初始化工作， 进入到【系统设置】-》【第三方登录插件管理】 找到 右上方按钮 【初始化插件】 点击 初始化成功,
+
+
+接下来就是安装 QQ  淘宝  新浪微博 支付宝插件 就可以使用了
+
+
+【【注意事项】】
+1、安装并配置好登录插件后，在测试过程中，如果出现英文乱码，一种原因是未正常安装；如果安装正确，另一种原因，就是应用未通过审核上线，只有申请者的账号可以使用，需要到相应的登录管理平台，提交申请，才可所有人使用！
+微博应用未通过审核，登录会提示如下错误Code:
+-code:21321
+-message:applications over the unaudited use restrictions!
+
+2、当后台未初始化插件，会提示如下类似错误代码，请根据步骤说明初始化登录插件。
+错误代码：
+MySQL server error report:Array ( [0] => Array ( [message] => MySQL Query Error ) [1] => Array ( [sql] => SELECT user_name,password,aite_id FROM `a0927093241`.`ecs_users` WHERE aite_id = 'qq_4B73E67722FC1FBF16235BB0817EA26F' OR aite_id='4B73E67722FC1FBF16235BB0817EA26F' ) [2] => Array ( [error] => Unknown column 'aite_id' in 'field list' ) [3] => Array ( [errno] => 1054 ) ) 
+
+3、提示如下错误代码，说明目录没有写入文件的权限，请联系空间服务商处理
+Warning: file_put_contents(D:/wwwroot/abc/wwwroot/includes/website/config/qq_config.php) [function.file-put-contents]
+
+4、页面提示“服务器未注册该插件”，说明user.php文件未正确配置或位置错误，请根据说明文档配置
+
+5、提示的错误代码里含有“openssl”字样，说明空间未开启或安装php_curl组件，请联系空间提供商处理
+6、提示“Parse error: syntax error, unexpected '}', expecting ',' or ';' in D:\freehost\muyans\web\includes\website\cls_http.php”相关代码，错误原因同5
+
+
+/***********四月更新日志***********/
+4.17	--更新淘宝后台未安装，前台登录链接提示乱码，修复为提示未安装信息
+4.18	--补充注意事项说明
+4.22	--完善补充模板文件修改，独立成单个文件
+5.13	--补充注意事项说明第2条
+5.14	--增加2.7.3版本调用代码，解决2.7.3版本中不兼容部分IE8浏览器登陆后无法保存cookie的情况（同步GBK）
+
+7.10	--补充注意实现说明第3、4、5条
+7.12	--完善插件，由于空间未开启或不支持php_curl，php_openssl组件，增加提示信息
+12.25   --修复一个未开启php_curl,出现乱码的bug

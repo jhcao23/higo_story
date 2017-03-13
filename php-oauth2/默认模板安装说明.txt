@@ -1,0 +1,60 @@
+-------------------------------修改 6 调用代码，在您模板文件下的user_passport.dwt文件（默认模板的路径是themes\default\，比如你的模板名称是abc，那么打开themes\abc目录），此文件是修改登录注册页面，找到对应的位置加调用代码，参考：
+登录页面添加位置，找到如下代码,大概53行：（注意下面都是以默认模块为准）
+<tr>
+            <td>&nbsp;</td>
+            <td align="left">
+            <input type="hidden" name="act" value="act_login" />
+            <input type="hidden" name="back_act" value="{$back_act}" />
+            <input type="submit" name="submit" value="" class="us_Submit" />
+            </td>
+          </tr>
+
+在其后面添加如下代码：
+
+<tr>
+            <td colspan="2" valign="middle"><table width="360" border="0" cellpadding="0" cellspacing="0">
+                <tbody><tr>
+                  <td height="30" colspan="4">使用合作网站账号登录：</td>
+                </tr>
+                <tr>
+                  <td><a href="user.php?act=oath&type=qq"><img src="images/qq_login.gif"/></a>
+</td>
+                                   <td><a href="user.php?act=oath&type=weibo"><img src="images/sina_login_logo.gif"/></a>
+</td>                  <td><a href="user.php?act=oath&type=alipay"><img src="images/alipay_login.png"/></a>
+</td><td><a href="user.php?act=oath&type=taobao"><img src="images/taobao_login.gif"/></a>
+</td>
+                </tr>
+              </tbody></table></td>
+          </tr>
+
+注册页面添加位置，找到如下代码,大概204行：
+<tr>
+          <td>&nbsp;</td>
+          <td class="actionSub">
+          <a href="user.php?act=login">{$lang.want_login}</a><br />
+          <a href="user.php?act=get_password">{$lang.forgot_password}</a>
+          </td>
+</tr>
+
+在其后面添加如下代码：
+
+<tr>
+         <td>&nbsp;</td>
+          <td>
+          <a href="user.php?act=oath&type=qq"><img src="images/qq_login.gif"/></a>&nbsp;&nbsp;
+          <a href="user.php?act=oath&type=weibo"><img src="images/sina_login_logo.gif"/></a>&nbsp;&nbsp;
+		  <a href="user.php?act=oath&type=alipay"><img src="images/alipay_login.png"/></a>&nbsp;&nbsp;
+		  <a href="user.php?act=oath&type=taobao"><img src="images/taobao_login.gif"/></a><br />&nbsp;&nbsp;
+          </td>
+        </tr>
+
+
+-------------------------------修改 7 调用代码，在您模板文件library目录下的member_info.lbi文件，此文件是首页头部修改位置文件，找到对应的位置加调用代码，参考：
+在代码：<a href="user.php?act=register"><img src="images/bnt_reg.gif" /></a>
+后面加上：
+<a href="user.php?act=oath&type=qq"><img src="images/qq_logins_24.png"></a>
+<a href="user.php?act=oath&type=weibo"><img src="images/sina_login_logo.gif"></a>
+<a href="user.php?act=oath&type=alipay"><img src="images/alipay_login_20.png"></a>
+<a href="user.php?act=oath&type=taobao"><img src="images/taobao_login_logo.gif"></a>
+
+对于模板文件修改，这里说了修改的页面，以及提供参考的布局代码，视不同模板样式布局会有所不一样，店主不承担模板文件修改及样式布局，谢谢理解与支持！
